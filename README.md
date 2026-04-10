@@ -1,4 +1,4 @@
-# PySync CLI 🔄
+# PySync CLI 
 
 O **PySync CLI** é uma ferramenta de linha de comando robusta para sincronização incremental de arquivos, desenvolvida em Python. Ideal para automação de backups e espelhamento de diretórios, o projeto foca em eficiência, segurança e auditabilidade.
 
