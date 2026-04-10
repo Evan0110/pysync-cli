@@ -29,7 +29,7 @@ O **PySync CLI** é uma ferramenta de linha de comando robusta para sincronizaç
 Certifique-se de ter o Python 3 instalado em sua máquina Linux.
 
 ### Instalação
-1. Clone o repositório:
-   ```bash
-   git clone [https://github.com/SEU_USUARIO/pysync-cli.git](https://github.com/SEU_USUARIO/pysync-cli.git)
-   cd pysync-cli
+Clone o repositório:
+```bash
+git clone [https://github.com/SEU_USUARIO/pysync-cli.git](https://github.com/SEU_USUARIO/pysync-cli.git)
+cd pysync-cli
