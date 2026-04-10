@@ -10,21 +10,22 @@ def main():
     
     parser.add_argument('--origem', required=True, help="Caminho da pasta original")
     parser.add_argument('--destino', required=True, help="Caminho da pasta de backup")
+    parser.add_argument('--dry-run', action='store_true', help="Simula a execução sem copiar/apagar arquivos")
     
-    # NOVA FLAG ADICIONADA:
-    parser.add_argument('--dry-run', action='store_true', help="Simula a execução sem copiar nenhum arquivo")
+    # NOVA FLAG:
+    parser.add_argument('--mirror', action='store_true', help="Modo espelho: exclui no destino os arquivos que não existem na origem")
     
     args = parser.parse_args()
 
     try:
-        # Passamos a flag dry_run para o motor
-        resultados = sincronizar_diretorios(args.origem, args.destino, dry_run=args.dry_run)
+        # Repassando a variável args.mirror para a função
+        resultados = sincronizar_diretorios(args.origem, args.destino, dry_run=args.dry_run, mirror=args.mirror)
         
         if resultados:
             arquivos_verificados, arquivos_copiados, bytes_transferidos = resultados
             
-            # Ajustamos o status no banco de dados se for simulação
             status = "Sucesso (Simulação)" if args.dry_run else "Sucesso"
+            status = f"{status} [Modo Espelho]" if args.mirror else status
             
             registrar_execucao(arquivos_verificados, arquivos_copiados, bytes_transferidos, status=status)
         else:
