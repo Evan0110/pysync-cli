@@ -6,12 +6,10 @@ def sincronizar_diretorios(pasta_origem, pasta_destino):
     """
     Sincroniza arquivos da origem para o destino de forma incremental.
     """
-    # 1. Valida se a origem existe
     if not os.path.exists(pasta_origem):
         print(f"Erro: A pasta de origem '{pasta_origem}' não existe.")
         return
 
-    # 2. A SUA OBSERVAÇÃO: Se o destino não existe, nós criamos!
     if not os.path.exists(pasta_destino):
         print(f"Destino '{pasta_destino}' não encontrado. Criando nova pasta...")
         os.makedirs(pasta_destino)
@@ -22,18 +20,14 @@ def sincronizar_diretorios(pasta_origem, pasta_destino):
 
     print(f"Iniciando sincronização...\nOrigem: {pasta_origem}\nDestino: {pasta_destino}\n" + "-"*40)
 
-    # 3. Percorre a origem
     for raiz, diretorios, arquivos in os.walk(pasta_origem):
         
-        # 4. Magia do os.path: Descobrir a estrutura de subpastas para replicar no destino
         caminho_relativo = os.path.relpath(raiz, pasta_origem)
         caminho_destino_atual = os.path.join(pasta_destino, caminho_relativo)
 
-        # Se houver subpastas na origem, cria elas no destino também
         if not os.path.exists(caminho_destino_atual):
             os.makedirs(caminho_destino_atual)
 
-        # 5. Verifica os arquivos
         for nome_arquivo in arquivos:
             arquivos_verificados += 1
             caminho_origem_completo = os.path.join(raiz, nome_arquivo)
@@ -41,23 +35,19 @@ def sincronizar_diretorios(pasta_origem, pasta_destino):
 
             precisa_copiar = False
 
-            # Regra CDC 1: O arquivo NÃO existe no destino?
             if not os.path.exists(caminho_destino_completo):
                 precisa_copiar = True
             else:
-                # Regra CDC 2: O arquivo existe, mas o da origem foi modificado mais recentemente?
                 tempo_origem = os.path.getmtime(caminho_origem_completo)
                 tempo_destino = os.path.getmtime(caminho_destino_completo)
                 
                 if tempo_origem > tempo_destino:
                     precisa_copiar = True
 
-            # 6. Realiza a cópia
             if precisa_copiar:
                 tamanho = os.path.getsize(caminho_origem_completo)
                 print(f"Copiando: {nome_arquivo}")
                 
-                # O shutil.copy2 é essencial aqui: ele copia o arquivo E preserva a data de modificação original!
                 shutil.copy2(caminho_origem_completo, caminho_destino_completo)
                 
                 arquivos_copiados += 1
